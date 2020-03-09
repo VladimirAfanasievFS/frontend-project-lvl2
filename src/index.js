@@ -1,18 +1,15 @@
 
 import path from 'path';
-import fs from 'fs';
 import genDiff from './modules/genDiff';
+import readFileData from './modules/readFileData';
+import parse from './modules/parse';
 
 
 const startGenDiff = (firstFilePath, secondFilePath) => {
-  const absolutePathFile1 = path.resolve(process.cwd(), firstFilePath);
-  const absolutePathFile2 = path.resolve(process.cwd(), secondFilePath);
-
-  const dataFile1 = fs.readFileSync(absolutePathFile1);
-  const dataFile2 = fs.readFileSync(absolutePathFile2);
-
-  const objFile1 = JSON.parse(dataFile1);
-  const objFile2 = JSON.parse(dataFile2);
+  const dataFile1 = readFileData(firstFilePath);
+  const dataFile2 = readFileData(secondFilePath);
+  const objFile1 = parse(dataFile1, path.extname(firstFilePath));
+  const objFile2 = parse(dataFile2, path.extname(secondFilePath));
   return genDiff(objFile1, objFile2);
 };
 

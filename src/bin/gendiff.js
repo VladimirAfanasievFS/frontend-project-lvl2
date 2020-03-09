@@ -15,5 +15,3 @@ program
 program.parse(process.argv);
 
 if (program.format) console.log(`- ${program.format}`);
-
-console.log(startGenDiff('before.json', 'after.json'));
