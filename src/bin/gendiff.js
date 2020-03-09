@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import program from 'commander';
+import startGenDiff from '..';
 
 program
   .description('Compares two configuration files and shows a difference.')
@@ -9,8 +10,10 @@ program
   .action((firstConfig, secondConfig) => {
     const firstConfigValue = firstConfig;
     const secondConfigValue = secondConfig;
-    console.log(firstConfigValue, secondConfigValue);
+    console.log(startGenDiff(firstConfigValue, secondConfigValue));
   });
 program.parse(process.argv);
 
 if (program.format) console.log(`- ${program.format}`);
+
+console.log(startGenDiff('before.json', 'after.json'));
