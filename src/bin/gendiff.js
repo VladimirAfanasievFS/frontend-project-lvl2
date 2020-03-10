@@ -15,3 +15,8 @@ program
 program.parse(process.argv);
 
 if (program.format) console.log(`- ${program.format}`);
+
+// const obj1 = '__fixtures__/beforeTree.json';
+// const obj2 = '__fixtures__/afterTree.json';
+
+// startGenDiff(obj1, obj2);

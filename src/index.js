@@ -10,7 +10,8 @@ const startGenDiff = (firstFilePath, secondFilePath) => {
   const dataFile2 = readFileData(secondFilePath);
   const objFile1 = parse(dataFile1, path.extname(firstFilePath));
   const objFile2 = parse(dataFile2, path.extname(secondFilePath));
-  return genDiff(objFile1, objFile2);
+  const result = genDiff(objFile1, objFile2);
+  return result;
 };
 
 export default startGenDiff;

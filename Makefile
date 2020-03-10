@@ -13,6 +13,8 @@ make lint:
 	npx eslint .
 test:
 	npm test	
+testNow: 
+	npx jest --runTestsByPath "__test__/modules/genDiff.test.js"
 test-coverage:
 	npm test -- --coverage
 .PHONY: test	
