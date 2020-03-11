@@ -14,7 +14,7 @@ make lint:
 test:
 	npm test	
 testNow: 
-	npx jest --runTestsByPath "__test__/modules/genDiff.test.js"
+	npx jest --runTestsByPath "__test__/index.test.js" --watch
 test-coverage:
 	npm test -- --coverage
 .PHONY: test	
