@@ -1,6 +1,7 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
 
+
 const parser = {
   '.json': (dataFile) => JSON.parse(dataFile),
   '.yaml': (dataFile) => yaml.safeLoad(dataFile),
