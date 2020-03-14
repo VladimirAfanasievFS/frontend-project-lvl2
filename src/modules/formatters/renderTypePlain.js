@@ -1,7 +1,7 @@
 
 import _ from 'lodash';
 
-const statusKeySimple = {
+const statusKeyNode = {
   notChange: () => '',
   remove: (el, path) => `Property '${path.join('.')}' was deleted\n`,
   add: (el, path) => {
@@ -30,7 +30,7 @@ const iter = (AST, pathNode = []) => {
     const isRepetitiveKey = AST.filter((el) => el.key === key).length > 1;
     const retVal = isRepetitiveKey
       ? getResultChanged(fullPathNode, getBeforeValue(AST, key), getAfterValue(AST, key))
-      : statusKeySimple[statusKey](node, fullPathNode);
+      : statusKeyNode[statusKey](node, fullPathNode);
     return [...acc, retVal];
   }, []);
 

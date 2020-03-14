@@ -2,21 +2,18 @@
 import program from 'commander';
 import startGenDiff from '..';
 
+let pathToFile1;
+let pathToFile2;
+
 program
   .description('Compares two configuration files and shows a difference.')
   .version('1.02.1', '-V, --version', 'output the current version')
-  .option('-f, --format [type]', 'output format')
+  .option('-f, --format [type]', 'output format', 'plain')
   .arguments('<firstConfig> <secondConfig>')
-  .action((firstConfig, secondConfig) => {
-    const firstConfigValue = firstConfig;
-    const secondConfigValue = secondConfig;
-    console.log(startGenDiff(firstConfigValue, secondConfigValue));
+  .action((argPathToFile1, argPathToFile2) => {
+    pathToFile1 = argPathToFile1;
+    pathToFile2 = argPathToFile2;
   });
 program.parse(process.argv);
 
-if (program.format) console.log(`- ${program.format}`);
-
-// const obj1 = '__fixtures__/beforeTree.json';
-// const obj2 = '__fixtures__/afterTree.json';
-
-// startGenDiff(obj1, obj2);
+if (program.format) console.log(startGenDiff(pathToFile1, pathToFile2, program.format));

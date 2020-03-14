@@ -7,9 +7,9 @@ const parser = {
   '.ini': (dataFile) => ini.parse(dataFile),
 };
 
-const parse = (dataFile, typeFile) => {
+const parsers = (dataFile, typeFile) => {
   const result = parser[typeFile](dataFile);
   return result;
 };
 
-export default parse;
+export default parsers;

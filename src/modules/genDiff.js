@@ -30,19 +30,25 @@ const getStatusKeyNode = (valueUniq, value1, value2) => {
   }
   return { statusKey: 'error' };
 };
-const getDiff = (objFile1 = {}, objFile2 = {}) => {
-  const keyValue1 = _.isPlainObject(objFile1) ? Object.entries(objFile1) : objFile1;
-  const keyValue2 = _.isPlainObject(objFile2) ? Object.entries(objFile2) : objFile2;
 
-  const keyValueUnionUniq = _.unionWith(keyValue1, keyValue2, _.isEqual).sort();
-  // console.table(keyValueUnionUniq);
+const getDiff = (structuredData1 = {}, structuredData2 = {}) => {
+  const keysValuesData1 = _.isPlainObject(structuredData1)
+    ? Object.entries(structuredData1)
+    : structuredData1;
 
-  const convertToAst = keyValueUnionUniq.reduce((acc, keyValueUniq) => {
+  const keysValuesData2 = _.isPlainObject(structuredData2)
+    ? Object.entries(structuredData2)
+    : structuredData2;
+
+  const keysValuesUniq = _.unionWith(keysValuesData1, keysValuesData2, _.isEqual).sort();
+
+  const convertToAst = keysValuesUniq.reduce((acc, keyValueUniq) => {
     const [key, value] = keyValueUniq;
     if (_.isPlainObject(value)) {
-      const hasInTwoObject = _.has(objFile1, key) && _.has(objFile2, key);
-      const statusKey = getStatusKeyNode(value, objFile1[key], objFile2[key], hasInTwoObject);
-      const resultValue = getDiff(objFile1[key], objFile2[key]);
+      const hasInTwoObject = _.has(structuredData1, key) && _.has(structuredData2, key);
+      const statusKey = getStatusKeyNode(value, structuredData1[key],
+        structuredData2[key], hasInTwoObject);
+      const resultValue = getDiff(structuredData1[key], structuredData2[key]);
 
       const resultPresentation = {
         key,
@@ -52,7 +58,7 @@ const getDiff = (objFile1 = {}, objFile2 = {}) => {
       return [...acc, resultPresentation];
     }
 
-    const statusKey = getStatusKey(value, objFile1[key], objFile2[key]);
+    const statusKey = getStatusKey(value, structuredData1[key], structuredData2[key]);
     const resultPresentation = {
       key, value, ...statusKey,
     };
@@ -63,9 +69,9 @@ const getDiff = (objFile1 = {}, objFile2 = {}) => {
 };
 
 
-const genDiff = (objFile1, objFile2) => {
-  const AST = getDiff(objFile1, objFile2);
-  // console.log(ploskAST);
+const generateDiffAST = (structuredData1, structuredData2) => {
+  const AST = getDiff(structuredData1, structuredData2);
+  // console.log(JSON.stringify(AST));
   // console.table(AST);
   // console.table(AST[1].value[3].value);
   // console.table(AST[1].value);
@@ -79,4 +85,4 @@ const genDiff = (objFile1, objFile2) => {
   return AST;
 };
 
-export default genDiff;
+export default generateDiffAST;

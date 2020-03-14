@@ -6,7 +6,7 @@ const pathFile1 = '__fixtures__/before';
 const pathFile2 = '__fixtures__/after';
 const resultTree = readFileData('__fixtures__/resultTree.txt');
 const resultPlain = readFileData('__fixtures__/resultPlain.txt');
-
+const resultJSON = readFileData('__fixtures__/resultJSON.txt');
 test('diffJson', () => {
   expect(startGenDiff(`${pathFile1}.json`, `${pathFile2}.json`, 'tree')).toEqual(resultTree);
 });
@@ -19,4 +19,7 @@ test('diffIni', () => {
 
 test('diffJsonPlain', () => {
   expect(startGenDiff(`${pathFile1}.json`, `${pathFile2}.json`, 'plain')).toEqual(resultPlain);
+});
+test('diffJsonJSON', () => {
+  expect(startGenDiff(`${pathFile1}.json`, `${pathFile2}.json`, 'JSON')).toEqual(resultJSON);
 });
