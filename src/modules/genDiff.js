@@ -1,16 +1,16 @@
 import _ from 'lodash';
 
 const getStatusKey = (valueUniq, value1, value2) => {
-  const equalWithValue1 = valueUniq === value1;
-  const equalWithValue2 = valueUniq === value2;
+  const uniqEqualValue1 = valueUniq === value1;
+  const uniqEqualValue2 = valueUniq === value2;
 
-  if (equalWithValue1 && equalWithValue2) {
+  if (uniqEqualValue1 && uniqEqualValue2) {
     return { statusKey: 'notChange' };
   }
-  if (equalWithValue1) {
+  if (uniqEqualValue1) {
     return { statusKey: 'remove' };
   }
-  if (equalWithValue2) {
+  if (uniqEqualValue2) {
     return { statusKey: 'add' };
   }
   return { statusKey: 'error' };
@@ -20,51 +20,48 @@ const getStatusKeyNode = (valueUniq, value1, value2) => {
   if (_.isObject(valueUniq) && _.isObject(value1) && _.isObject(value2)) {
     return { statusKey: 'notChange' };
   }
-  const equalWithValue1 = valueUniq === value1;
-  const equalWithValue2 = valueUniq === value2;
-  if (equalWithValue1) {
+  const uniqEqualValue1 = valueUniq === value1;
+  const uniqEqualValue2 = valueUniq === value2;
+  if (uniqEqualValue1) {
     return { statusKey: 'remove' };
   }
-  if (equalWithValue2) {
+  if (uniqEqualValue2) {
     return { statusKey: 'add' };
   }
   return { statusKey: 'error' };
 };
+const getKeysValues = (structuredData) => (_.isPlainObject(structuredData)
+  ? Object.entries(structuredData) : structuredData);
 
 const getDiff = (structuredData1 = {}, structuredData2 = {}) => {
-  const keysValuesData1 = _.isPlainObject(structuredData1)
-    ? Object.entries(structuredData1)
-    : structuredData1;
-
-  const keysValuesData2 = _.isPlainObject(structuredData2)
-    ? Object.entries(structuredData2)
-    : structuredData2;
+  const keysValuesData1 = getKeysValues(structuredData1);
+  const keysValuesData2 = getKeysValues(structuredData2);
 
   const keysValuesUniq = _.unionWith(keysValuesData1, keysValuesData2, _.isEqual).sort();
 
-  const convertToAst = keysValuesUniq.reduce((acc, keyValueUniq) => {
-    const [key, value] = keyValueUniq;
-    if (_.isPlainObject(value)) {
-      const hasInTwoObject = _.has(structuredData1, key) && _.has(structuredData2, key);
-      const statusKey = getStatusKeyNode(value, structuredData1[key],
-        structuredData2[key], hasInTwoObject);
-      const resultValue = getDiff(structuredData1[key], structuredData2[key]);
+  const difference = keysValuesUniq.reduce((acc, keyValueUniq) => {
+    const [keyUniq, valueUniq] = keyValueUniq;
+    if (_.isPlainObject(valueUniq)) {
+      const hasInTwoObject = _.has(structuredData1, keyUniq) && _.has(structuredData2, keyUniq);
+      const statusKey = getStatusKeyNode(valueUniq, structuredData1[keyUniq],
+        structuredData2[keyUniq], hasInTwoObject);
+      const resultValue = getDiff(structuredData1[keyUniq], structuredData2[keyUniq]);
 
       const resultPresentation = {
-        key,
+        key: keyUniq,
         value: resultValue,
         ...statusKey,
       };
       return [...acc, resultPresentation];
     }
 
-    const statusKey = getStatusKey(value, structuredData1[key], structuredData2[key]);
+    const statusKey = getStatusKey(valueUniq, structuredData1[keyUniq], structuredData2[keyUniq]);
     const resultPresentation = {
-      key, value, ...statusKey,
+      key: keyUniq, value: valueUniq, ...statusKey,
     };
     return [...acc, resultPresentation];
   }, []);
-  const result = _.uniqWith(convertToAst, _.isEqual);
+  const result = _.uniqWith(difference, _.isEqual);
   return result;
 };
 
