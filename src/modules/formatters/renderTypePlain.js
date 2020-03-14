@@ -9,12 +9,8 @@ const statusKeyNode = {
     return `Property '${path.join('.')}' was added with value: ${value}\n`;
   },
 };
-const getBeforeValue = (AST, key) => {
-  const findedValue = AST.find((el) => el.key === key && el.statusKey === 'remove').value;
-  return _.isObject(findedValue) ? '[complex value]' : findedValue;
-};
-const getAfterValue = (AST, key) => {
-  const findedValue = AST.find((el) => el.key === key && el.statusKey === 'add').value;
+const getValueByStatus = (AST, key, findStatusKey) => {
+  const findedValue = AST.find((el) => el.key === key && el.statusKey === findStatusKey).value;
   return _.isObject(findedValue) ? '[complex value]' : findedValue;
 };
 const getResultChanged = (path, beforeValue, afterValue) => `Property '${path.join('.')}' was changed from ${beforeValue} to ${afterValue}\n`;
@@ -29,7 +25,7 @@ const iter = (AST, pathNode = []) => {
     }
     const isRepetitiveKey = AST.filter((el) => el.key === key).length > 1;
     const retVal = isRepetitiveKey
-      ? getResultChanged(fullPathNode, getBeforeValue(AST, key), getAfterValue(AST, key))
+      ? getResultChanged(fullPathNode, getValueByStatus(AST, key, 'remove'), getValueByStatus(AST, key, 'add'))
       : statusKeyNode[statusKey](node, fullPathNode);
     return [...acc, retVal];
   }, []);
