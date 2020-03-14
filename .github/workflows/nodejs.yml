@@ -38,3 +38,8 @@ jobs:
         with:
           coverageCommand: make test-coverage
           debug: true
+      - name: npm test
+        run: |
+          make test
+        env:
+          CI: true
