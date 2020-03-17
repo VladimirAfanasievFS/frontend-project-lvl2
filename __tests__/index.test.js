@@ -1,8 +1,8 @@
 import path from 'path';
 import fs from 'fs';
-import startGenDiff from '../dist';
+import startGenDiff from '../src/index';
 
-const absolutePathFile = (fileName) => path.resolve(__dirname,'../__fixtures__/', fileName);
+const absolutePathFile = (fileName) => path.resolve(__dirname, '../__fixtures__/', fileName);
 const dataFile = (fileName) => fs.readFileSync(absolutePathFile(fileName), 'utf-8');
 
 test.each([

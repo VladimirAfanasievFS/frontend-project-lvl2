@@ -1,37 +1,34 @@
 
 import _ from 'lodash';
 
-
-const stringify = (obj, levelDepthNode = 1) => {
-  const spaceDepthNode = '  '.repeat(levelDepthNode);
-  const result = obj.map((el) => `${spaceDepthNode}${el.key}: ${el.value}`);
-
+const getFormatSpace = (count, simbol) => `${'    '.repeat(count)}  ${simbol} `;
+const stringify = (obj, levelDepthNode = 0) => {
+  const result = obj.map((el) => `${getFormatSpace(levelDepthNode, ' ')}${el.key}: ${el.value}`);
   return result.join('\n');
   // return JSON.stringify(obj);
 };
-
-const iter = (AST, levelDepthNode = 1) => {
+const iter = (AST, levelDepthNode = 0) => {
   const statusKeyList = {
-    notChange: (el) => `  ${el.key}: ${el.value}`,
-    remove: (el) => `- ${el.key}: ${el.value}`,
-    add: (el) => `+ ${el.key}: ${el.value}`,
+    notChange: (el, levelDepth) => `${getFormatSpace(levelDepth, ' ')}${el.key}: ${el.value}`,
+    remove: (el, levelDepth) => `${getFormatSpace(levelDepth, '-')}${el.key}: ${el.value}`,
+    add: (el, levelDepth) => `${getFormatSpace(levelDepth, '+')}${el.key}: ${el.value}`,
   };
   const statusKeyNode = {
-    notChange: (el) => `  ${el.key}: {${iter(el.value, levelDepthNode + 1).map((el1) => `${el1}`).join('')}`,
-    remove: (el) => `- ${el.key}: {\n${stringify(el.value, levelDepthNode + 2)}`,
-    add: (el) => `+ ${el.key}: {\n${stringify(el.value, levelDepthNode + 2)}`,
+    notChange: (el, levelDepth) => `${getFormatSpace(levelDepth, ' ')}${el.key}: {${iter(el.value, levelDepth + 1).map((el1) => `${el1}`).join('')}`,
+    remove: (el, levelDepth) => `${getFormatSpace(levelDepth, '-')}${el.key}: {\n${stringify(el.value, levelDepth + 1)}`,
+    add: (el, levelDepth) => `${getFormatSpace(levelDepth, '+')}${el.key}: {\n${stringify(el.value, levelDepth + 1)}`,
   };
   // console.log(AST);
   // console.table(AST);
   const result = AST.reduce((acc, child) => {
-    const spaceDepthNode = '  '.repeat(levelDepthNode);
+    // const spaceDepthList = '3333'.repeat(levelDepthNode);
     if (_.isArray(child.value)) {
-      return [...acc, `\n${spaceDepthNode}${statusKeyNode[child.statusKey](child)}\n${spaceDepthNode}  }`];
+      return [...acc, `\n${statusKeyNode[child.statusKey](child, levelDepthNode)}\n${getFormatSpace(levelDepthNode, ' ')}}`];
     }
-    return [...acc, `  \n${spaceDepthNode}${statusKeyList[child.statusKey](child)}`];
+    return [...acc, `\n${statusKeyList[child.statusKey](child, levelDepthNode)}`];
   }, []);
   return result;
 };
 
-const renderTypeTree = (AST) => `{${_.flattenDeep(iter(AST, 1)).join('').trimRight()}\n}`;
+const renderTypeTree = (AST) => `{${_.flattenDeep(iter(AST)).join('').trimRight()}\n}`;
 export default renderTypeTree;
