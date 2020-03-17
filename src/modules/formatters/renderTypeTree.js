@@ -28,7 +28,7 @@ const iter = (AST, levelDepthNode = 1) => {
     if (_.isArray(child.value)) {
       return [...acc, `\n${spaceDepthNode}${statusKeyNode[child.statusKey](child)}\n${spaceDepthNode}  }`];
     }
-    return [...acc, `\n${spaceDepthNode}${statusKeyList[child.statusKey](child)}`];
+    return [...acc, `  \n${spaceDepthNode}${statusKeyList[child.statusKey](child)}`];
   }, []);
   return result;
 };
