@@ -26,18 +26,16 @@ jobs:
         run: |
           make install
           make build
+          make test
         env:
           CI: true
       - name: Run linter
         run: |
           make lint
       - name: Test & publish code coverage
-        run: |
-          make test
         uses: paambaati/codeclimate-action@v2.4.0
         env:
           CC_TEST_REPORTER_ID: 62ca72e803caa03e49011f2bad5c8a5ee53f2bf45fb9c3f440004b31ce9dca33
-          CI: true
         with:
           coverageCommand: make test-coverage
           debug: true
