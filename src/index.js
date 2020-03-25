@@ -1,26 +1,19 @@
 
 import path from 'path';
-import generateDiffAST from './modules/genDiff';
-import readFileData from './modules/readFileData';
-import parse from './modules/parsers';
-import renderTypeTree from './modules/formatters/renderTypeTree.js';
-import renderTypePlain from './modules/formatters/renderTypePlain.js';
-import renderTypeJson from './modules/formatters/renderTypeJson.js';
+import generateDiff from './generateDiff';
+import readFileData from './readFileData';
+import parse from './parsers';
+import choiceRender from './formatters';
 
-const renderType = {
-  tree: (AST) => renderTypeTree(AST),
-  plain: (AST) => renderTypePlain(AST),
-  JSON: (AST) => renderTypeJson(AST),
+const genDiff = (path1, path2, typeRender) => {
+  const data1 = readFileData(path1);
+  const data2 = readFileData(path2);
+  const structuredData1 = parse(data1, path.extname(path1));
+  const structuredData2 = parse(data2, path.extname(path2));
+  const unionDiff = generateDiff(structuredData1, structuredData2);
+  const renderView = choiceRender[typeRender](unionDiff);
+  //  console.log(renderedView);
+  return renderView;
 };
 
-const startGenDiff = (pathToFile1, pathToFile2, render) => {
-  const dataFromFile1 = readFileData(pathToFile1);
-  const dataFromFile2 = readFileData(pathToFile2);
-  const structuredDataFromFile1 = parse(dataFromFile1, path.extname(pathToFile1));
-  const structuredDataFromFile2 = parse(dataFromFile2, path.extname(pathToFile2));
-  const unionDiffAST = generateDiffAST(structuredDataFromFile1, structuredDataFromFile2);
-  const renderedView = renderType[render](unionDiffAST);
-  return renderedView;
-};
-
-export default startGenDiff;
+export default genDiff;
