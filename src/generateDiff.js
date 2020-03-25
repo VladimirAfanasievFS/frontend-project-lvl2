@@ -3,17 +3,17 @@ import _ from 'lodash';
 const getAST = (data1, data2) => {
   const unionKeys = _.union(_.keys(data1), _.keys(data2)).sort();
   const difference = unionKeys.reduce((acc, key) => {
-    const obj1 = data1[key];
-    const obj2 = data2[key];
-    if (_.isPlainObject(obj1) && _.isPlainObject(obj2)) {
-      return [...acc, { key, status: 'unChangedNode', children: getAST(obj1, obj2) }];
+    const value1 = data1[key];
+    const value2 = data2[key];
+    if (_.isPlainObject(value1) && _.isPlainObject(value2)) {
+      return [...acc, { key, status: 'unChangedNode', children: getAST(value1, value2) }];
     }
-    if (obj1 !== obj2) {
+    if (value1 !== value2) {
       return [...acc, {
-        key, status: 'changedValue', deletedValue: obj1, addedValue: obj2,
+        key, status: 'changedValue', deletedValue: value1, addedValue: value2,
       }];
     }
-    return [...acc, { key, status: 'unChangedValue', unChangedValue: obj1 }];
+    return [...acc, { key, status: 'unChangedValue', unChangedValue: value1 }];
   }, []);
   return difference;
 };
