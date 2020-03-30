@@ -18,23 +18,26 @@ const stringify = (key, obj, levelDepth = 0) => {
 const makeTree = (AST, levelDepth = 0) => {
   // console.table(AST);
   const statusMap = {
-    unChangedNode: ({ key, children }, depth) => {
+    nested: ({ key, children }, depth) => {
       const child = makeTree(children, depth + 1);
       return `${makeFormatSpace(depth, ' ')}${key}: {\n${child}\n${makeFormatSpace(depth, ' ')}}`;
     },
-    //  addNode: (node, depth) => '2',
-    //  removeNode: (node, depth) => '3',
-    unChangedValue: ({ key, unChangedValue }, depth) => {
+    unChanged: ({ key, value }, depth) => {
       const space = makeFormatSpace(depth, ' ');
-      return `${space}${stringify(key, unChangedValue, depth)}`;
+      return `${space}${stringify(key, value, depth)}`;
     },
-    changedValue: ({ key, addedValue, deletedValue }, depth) => {
+    added: ({ key, value }, depth) => {
+      const addView = `${makeFormatSpace(depth, '+')}${stringify(key, value, depth)}`;
+      return addView;
+    },
+    removed: ({ key, value }, depth) => {
+      const removeView = `${makeFormatSpace(depth, '-')}${stringify(key, value, depth)}`;
+      return removeView;
+    },
+    changed: ({ key, addedValue, removedValue }, depth) => {
       const addView = `${makeFormatSpace(depth, '+')}${stringify(key, addedValue, depth)}`;
-      const deleteView = `${makeFormatSpace(depth, '-')}${stringify(key, deletedValue, depth)}`;
-      if (addedValue && deletedValue) {
-        return `${addView}\n${deleteView}`;
-      }
-      return addedValue !== undefined ? addView : deleteView;
+      const removeView = `${makeFormatSpace(depth, '-')}${stringify(key, removedValue, depth)}`;
+      return `${addView}\n${removeView}`;
     },
   };
   const result = AST.reduce((acc, node) => {

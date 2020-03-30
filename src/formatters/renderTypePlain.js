@@ -3,14 +3,18 @@ import _ from 'lodash';
 
 const getStrView = (value) => (_.isObject(value) ? '[complex value]' : value);
 const statusNode = {
-  unChangedValue: () => '',
-  changedValue: ({ addedValue, deletedValue }, path) => {
-    const addView = `Property '${path.join('.')}' was added with value: ${getStrView(addedValue)}\n`;
-    const deleteView = `Property '${path.join('.')}' was deleted\n`;
-    if (addedValue && deletedValue) {
-      return `Property '${path.join('.')}' was changed from ${getStrView(deletedValue)} to ${getStrView(addedValue)}\n`;
-    }
-    return addedValue !== undefined ? addView : deleteView;
+  unChanged: () => '',
+  added: ({ value }, path) => {
+    const addView = `Property '${path.join('.')}' was added with value: ${getStrView(value)}\n`;
+    return addView;
+  },
+  removed: (none, path) => {
+    const removeView = `Property '${path.join('.')}' was deleted\n`;
+    return removeView;
+  },
+  changed: ({ addedValue, removedValue }, path) => {
+    const changedView = `Property '${path.join('.')}' was changed from ${getStrView(removedValue)} to ${getStrView(addedValue)}\n`;
+    return changedView;
   },
 };
 const iter = (AST, pathNode = []) => {

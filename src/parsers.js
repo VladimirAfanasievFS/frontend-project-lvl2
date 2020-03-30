@@ -1,16 +1,18 @@
+import _ from 'lodash';
 import yaml from 'js-yaml';
 import ini from 'ini';
 
 
-const choiceParser = {
-  '.json': JSON.parse,
-  '.yaml': yaml.safeLoad,
-  '.ini': ini.parse,
+const parsers = {
+  json: JSON.parse,
+  yaml: yaml.safeLoad,
+  ini: ini.parse,
 };
 
-const parse = (data, type) => {
-  const result = choiceParser[type](data);
-  return result;
+const getParser = (parser) => {
+  if (!_.has(parsers, parser)) {
+    throw new Error(`Unknown parser : ${parser}'.`);
+  }
+  return parsers[parser];
 };
-
-export default parse;
+export default getParser;

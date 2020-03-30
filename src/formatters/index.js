@@ -1,12 +1,20 @@
 
+import _ from 'lodash';
 import renderTypeTree from './renderTypeTree';
 import renderTypePlain from './renderTypePlain';
 import renderTypeJson from './renderTypeJson';
 
-const choiceRender = {
-  tree: (AST) => renderTypeTree(AST),
-  plain: (AST) => renderTypePlain(AST),
-  JSON: (AST) => renderTypeJson(AST),
+
+const renders = {
+  tree: renderTypeTree,
+  plain: renderTypePlain,
+  JSON: renderTypeJson,
 };
 
-export default choiceRender;
+const getRender = (render) => {
+  if (!_.has(renders, render)) {
+    throw new Error(`Unknown render : ${render}'.`);
+  }
+  return renders[render];
+};
+export default getRender;
