@@ -1,9 +1,9 @@
 import path from 'path';
 import fs from 'fs';
 
-const readFileData = (pathFile) => {
-  const absolutePathFile = path.resolve(process.cwd(), pathFile);
-  const dataFile = fs.readFileSync(absolutePathFile, 'utf-8');
+const readFileData = (filePath) => {
+  const absoluteFilePath = path.resolve(process.cwd(), filePath);
+  const dataFile = fs.readFileSync(absoluteFilePath, 'utf-8');
 
   return dataFile;
 };

@@ -1,8 +1,8 @@
 
 import _ from 'lodash';
-import renderTypeTree from './renderTypeTree';
-import renderTypePlain from './renderTypePlain';
-import renderTypeJson from './renderTypeJson';
+import renderTypeTree from './Tree';
+import renderTypePlain from './Plain';
+import renderTypeJson from './Json';
 
 
 const renders = {
