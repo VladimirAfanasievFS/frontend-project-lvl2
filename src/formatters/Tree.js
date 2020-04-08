@@ -1,15 +1,15 @@
 
 import _ from 'lodash';
 
-const makeFormatSpace = (count, simbol) => `${'    '.repeat(count)}  ${simbol} `;
+const formatSpace = (count, simbol) => `${'    '.repeat(count)}  ${simbol} `;
 const stringify = (key, obj, depth = 0) => {
   if (!_.isPlainObject(obj)) {
     return `${key}: ${obj}`;
   }
 
   const result = Object.entries(obj).map(([key2, value]) => {
-    const beginSpace = makeFormatSpace(depth + 1, ' ');
-    const endSpace = makeFormatSpace(depth, ' ');
+    const beginSpace = formatSpace(depth + 1, ' ');
+    const endSpace = formatSpace(depth, ' ');
     return `${key}: {\n${beginSpace}${key2}: ${value}\n${endSpace}}`;
   });
   return result;
@@ -19,17 +19,17 @@ const makeTree = (AST, depth = 0) => {
   const statusMap = {
     nested: ({ key, children }) => {
       const child = makeTree(children, depth + 1);
-      return `${makeFormatSpace(depth, ' ')}${key}: {\n${child}\n${makeFormatSpace(depth, ' ')}}`;
+      return `${formatSpace(depth, ' ')}${key}: {\n${child}\n${formatSpace(depth, ' ')}}`;
     },
     unChanged: ({ key, value }) => {
-      const space = makeFormatSpace(depth, ' ');
+      const space = formatSpace(depth, ' ');
       return `${space}${stringify(key, value, depth)}`;
     },
-    added: ({ key, value }) => `${makeFormatSpace(depth, '+')}${stringify(key, value, depth)}`,
-    removed: ({ key, value }) => `${makeFormatSpace(depth, '-')}${stringify(key, value, depth)}`,
+    added: ({ key, value }) => `${formatSpace(depth, '+')}${stringify(key, value, depth)}`,
+    removed: ({ key, value }) => `${formatSpace(depth, '-')}${stringify(key, value, depth)}`,
     changed: ({ key, addedValue, removedValue }) => {
-      const added = `${makeFormatSpace(depth, '+')}${stringify(key, addedValue, depth)}`;
-      const removed = `${makeFormatSpace(depth, '-')}${stringify(key, removedValue, depth)}`;
+      const added = `${formatSpace(depth, '+')}${stringify(key, addedValue, depth)}`;
+      const removed = `${formatSpace(depth, '-')}${stringify(key, removedValue, depth)}`;
       return `${added}\n${removed}`;
     },
   };
@@ -40,5 +40,5 @@ const makeTree = (AST, depth = 0) => {
   return result.join('\n');
 };
 
-const renderTypeTree = (AST) => `{\n${makeTree(AST)}\n}`;
-export default renderTypeTree;
+const renderTree = (AST) => `{\n${makeTree(AST)}\n}`;
+export default renderTree;

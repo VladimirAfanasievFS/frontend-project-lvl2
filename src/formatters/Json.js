@@ -1,3 +1,3 @@
 
-const renderTypeJson = (AST) => JSON.stringify(AST);
-export default renderTypeJson;
+const renderJson = JSON.stringify;
+export default renderJson;
