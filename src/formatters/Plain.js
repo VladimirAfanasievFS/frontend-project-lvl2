@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 const getStrView = (value) => (_.isObject(value) ? '[complex value]' : value);
 
-const iter = (AST, sectionsPath = []) => {
+const iter = (AST, ancestors = []) => {
   const statusNode = {
     unChanged: () => null,
     added: ({ value }, path) => `Property '${path.join('.')}' was added with value: ${getStrView(value)}`,
@@ -15,8 +15,8 @@ const iter = (AST, sectionsPath = []) => {
 
   const result = AST.map((node) => {
     const { key, status } = node;
-    const sectionsPathNode = [...sectionsPath, key];
-    const retVal = statusNode[status](node, sectionsPathNode);
+    const newAncestors = [...ancestors, key];
+    const retVal = statusNode[status](node, newAncestors);
     return retVal;
   });
 
