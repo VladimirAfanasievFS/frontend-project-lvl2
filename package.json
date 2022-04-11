@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "bin": {
-    "gendiff": "dist/bin/gendiff.js"
+    "gendiff": "src/bin/gendiff.js"
   },
   "main": "index.js",
   "scripts": {
