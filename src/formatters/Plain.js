@@ -1,4 +1,3 @@
-
 import _ from 'lodash';
 
 const getStrView = (value) => (_.isObject(value) ? '[complex value]' : value);

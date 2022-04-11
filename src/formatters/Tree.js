@@ -1,4 +1,3 @@
-
 import _ from 'lodash';
 
 const getTab = (count, simbol) => `${'    '.repeat(count)}  ${simbol} `;

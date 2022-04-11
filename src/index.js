@@ -1,4 +1,3 @@
-
 import path from 'path';
 import generateDiff from './generateDiff.js';
 import readFileData from './readFileData.js';

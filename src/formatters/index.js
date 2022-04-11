@@ -1,9 +1,7 @@
-
 import _ from 'lodash';
 import renderTree from './Tree.js';
 import renderPlain from './Plain.js';
 import renderJson from './Json.js';
-
 
 const renders = {
   tree: renderTree,
