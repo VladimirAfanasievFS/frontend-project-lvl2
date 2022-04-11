@@ -16,11 +16,10 @@ test.each([
   ['json', 'plain'],
   ['yaml', 'plain'],
   ['ini', 'plain'],
-  ['json', 'JSON'],
-  ['yaml', 'JSON'],
-// ['.ini', 'JSON'],
+  ['json', 'json'],
+  ['yaml', 'json'],
 ])('Files: *%s Format: %s', (extension, format) => {
-  const resultDifference = getFileData(`result${format}.txt`);
+  const resultDifference = getFileData(`result_${format}.txt`);
   const filePath1 = getAbsoluteFilePath(`before.${extension}`);
   const filePath2 = getAbsoluteFilePath(`after.${extension}`);
   const difference = genDiff(filePath1, filePath2, format);

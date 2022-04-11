@@ -6,10 +6,10 @@ import renderJson from './Json.js';
 const renders = {
   tree: renderTree,
   plain: renderPlain,
-  JSON: renderJson,
+  json: renderJson,
 };
 
-const getRender = (render) => {
+const getRender = (render = 'tree') => {
   if (!_.has(renders, render)) {
     throw new Error(`Unknown render : ${render}'.`);
   }
