@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import program from 'commander';
-import genDiff from '..';
+import genDiff from '../generateDiff.js';
 
 let pathToFile1;
 let pathToFile2;

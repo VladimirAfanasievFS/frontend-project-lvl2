@@ -1,6 +1,11 @@
-import path from 'path';
+import path, { dirname } from 'path';
 import fs from 'fs';
-import genDiff from '../src';
+import { fileURLToPath } from 'url';
+import genDiff from '../index.js';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const getAbsoluteFilePath = (fileName) => path.resolve(__dirname, '../__fixtures__/', fileName);
 const getFileData = (fileName) => fs.readFileSync(getAbsoluteFilePath(fileName), 'utf-8');

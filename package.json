@@ -1,16 +1,15 @@
 {
-  "name": "frontend-project-lvl2",
+  "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "bin": {
     "gendiff": "dist/bin/gendiff.js"
   },
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "babel-node": "babel-node",
-    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
-    "prepublishOnly": "npm run build"
+    "test": "npx jest",
+    "test-watch": "npx jest --watch"
   },
   "files": [
     "dist"
@@ -20,25 +19,22 @@
     "url": "git+https://github.com/H9ko/frontend-project-lvl2.git"
   },
   "author": "",
+  "engines": {
+    "node": ">=14"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/H9ko/frontend-project-lvl2/issues"
   },
   "homepage": "https://github.com/H9ko/frontend-project-lvl2#readme",
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.8.7",
-    "@babel/node": "^7.8.7",
-    "@babel/preset-env": "^7.8.7",
-    "babel-eslint": "^10.1.0",
-    "babel-jest": "^25.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jest": "^23.6.0",
-    "jest": "^25.1.0"
+    "jest": "^27.0.6"
   },
   "dependencies": {
     "commander": "^4.1.1",

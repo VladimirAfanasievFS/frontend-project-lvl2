@@ -1,9 +1,9 @@
 
 import path from 'path';
-import generateDiff from './generateDiff';
-import readFileData from './readFileData';
-import getParser from './parsers';
-import getRender from './formatters';
+import generateDiff from './generateDiff.js';
+import readFileData from './readFileData.js';
+import getParser from './parsers.js';
+import getRender from './formatters/index.js';
 
 const getExtension = (filePath) => path.extname(filePath).slice(1);
 const parse = (filePath, data) => getParser(getExtension(filePath))(data);
