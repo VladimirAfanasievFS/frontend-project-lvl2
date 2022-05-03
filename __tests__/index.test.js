@@ -9,19 +9,22 @@ const __dirname = dirname(__filename);
 const getAbsoluteFilePath = (fileName) => path.resolve(__dirname, '../__fixtures__/', fileName);
 const getFileData = (fileName) => fs.readFileSync(getAbsoluteFilePath(fileName), 'utf-8');
 
+const resultFileName = {
+  json: 'result_json.json',
+  plain: 'result_plain.txt',
+  stylish: 'result_stylish.txt',
+};
 test.each([
-  ['json', 'tree'],
-  ['yaml', 'tree'],
-  ['ini', 'tree'],
+  ['json', 'stylish'],
+  ['yml', 'stylish'],
   ['json', 'plain'],
-  ['yaml', 'plain'],
-  ['ini', 'plain'],
+  ['yml', 'plain'],
   ['json', 'json'],
-  ['yaml', 'json'],
+  ['yml', 'json'],
 ])('Files: *%s Format: %s', (extension, format) => {
-  const resultDifference = getFileData(`result_${format}.txt`);
-  const filePath1 = getAbsoluteFilePath(`before.${extension}`);
-  const filePath2 = getAbsoluteFilePath(`after.${extension}`);
+  const resultDifference = getFileData(resultFileName[format]);
+  const filePath1 = getAbsoluteFilePath(`file1.${extension}`);
+  const filePath2 = getAbsoluteFilePath(`file2.${extension}`);
   const difference = genDiff(filePath1, filePath2, format);
   expect(difference).toEqual(resultDifference);
 });

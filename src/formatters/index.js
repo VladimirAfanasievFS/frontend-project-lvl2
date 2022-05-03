@@ -1,15 +1,15 @@
 import _ from 'lodash';
-import renderTree from './Tree.js';
-import renderPlain from './Plain.js';
-import renderJson from './Json.js';
+import stylish from './stylish.js';
+import plain from './plain.js';
+import json from './json.js';
 
 const renders = {
-  tree: renderTree,
-  plain: renderPlain,
-  json: renderJson,
+  stylish,
+  plain,
+  json,
 };
 
-const getRender = (render = 'tree') => {
+const getRender = (render) => {
   if (!_.has(renders, render)) {
     throw new Error(`Unknown render : ${render}'.`);
   }

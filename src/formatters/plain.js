@@ -1,14 +1,27 @@
 import _ from 'lodash';
 
-const getStrView = (value) => (_.isObject(value) ? '[complex value]' : value);
+const stringify = (value) => {
+  if (value === null) {
+    return value;
+  }
+
+  if (typeof value === 'object') {
+    return '[complex value]';
+  }
+
+  if (typeof value === 'string') {
+    return `'${value}'`;
+  }
+  return String(value);
+};
 
 const makePlain = (AST, ancestors = []) => {
   const statusNode = {
     unChanged: () => null,
-    added: ({ value }, path) => `Property '${path.join('.')}' was added with value: ${getStrView(value)}`,
-    removed: (none, path) => `Property '${path.join('.')}' was deleted`,
+    added: ({ value }, path) => `Property '${path.join('.')}' was added with value: ${stringify(value)}`,
+    removed: (none, path) => `Property '${path.join('.')}' was removed`,
     changed: ({ addedValue, removedValue }, path) => (
-      `Property '${path.join('.')}' was changed from ${getStrView(removedValue)} to ${getStrView(addedValue)}`),
+      `Property '${path.join('.')}' was updated. From ${stringify(removedValue)} to ${stringify(addedValue)}`),
     nested: ({ children }, path) => makePlain(children, path),
   };
 
