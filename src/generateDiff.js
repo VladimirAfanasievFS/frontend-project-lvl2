@@ -1,8 +1,9 @@
 import _ from 'lodash';
 
 const generateDiff = (data1, data2) => {
-  const unionKeys = _.union(_.keys(data1), _.keys(data2)).sort();
-  const difference = unionKeys.map((key) => {
+  const unionKeys = _.union(_.keys(data1), _.keys(data2));
+  const sortedKeys = _.sortBy(unionKeys);
+  const difference = sortedKeys.map((key) => {
     const value1 = data1[key];
     const value2 = data2[key];
     if (_.has(data1, key) && !_.has(data2, key)) {
